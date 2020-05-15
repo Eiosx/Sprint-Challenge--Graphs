@@ -29,6 +29,36 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+opposite_directions = {"n" : "s", "w" : "e", "e" : "w", "s" : "n"}
+# Graph
+
+class Graph:
+  def_init_(self):
+    self.vertices = {}
+
+  def add_vertex(self, room, direction):
+    if room not in self.vertices:
+      self.vertices[room] = {}
+    self.vertices[room][direction] = "?"
+  
+  def add_edge(self, room1, room2, direction):
+    self.vertices[room1][direction] = room2
+    self.vertices[room2][opposite_directions[direction]] = room1
+
+  def get_neighbors(self, room):
+    neighbor_list = []
+    for key, value in self.vertices[room].items():
+      if value not "?":
+        neighbor_list.append((key, value))
+    return neighbor_list
+
+
+class Traversal:
+    def __init__(self, player):
+        self.player = player
+        self.maze = Graph()
+        self.finished = set()
+        opposite_directions = {"n" : "s", "w" : "e", "e" : "w", "s" : "n"}
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
